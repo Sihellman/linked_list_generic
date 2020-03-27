@@ -26,31 +26,32 @@ public class LinkedList<T> {
         }
     }
 
-    private Node head = null;
+    private Node headNode = null;
+    private Node endNode = null;
 
     public LinkedList() {
         // nothing
     }
 
     public LinkedList(T payload) {
-        head = new Node(payload);
+        headNode = new Node(payload);
+        endNode = headNode;
+    }
+    public T getEndNodePayLoad(){
+        return endNode.payload;
+    }
+    public T getHeadNodePayLoad(){
+        return headNode.payload;
     }
 
     public boolean isEmpty() {
-        return (head == null);
+        return (headNode == null);
     }
 
-    private Node end() {
-        Node endNode = head;
-        while (endNode.getNext() != null) {
-            endNode = endNode.getNext();
-        }
-        return endNode;
-    }
 
     public int size() {
         int size = 0;
-        for (Node start = head; start != null; start = start.next) {
+        for (Node start = headNode; start != null; start = start.next) {
             size += 1;
         }
         return size;
@@ -58,24 +59,28 @@ public class LinkedList<T> {
 
     public void insert(T object) {
         Node newNode = new Node(object);
-        newNode.setNext(head);
-        head = newNode;
+        newNode.setNext(headNode);
+        if (headNode == null){
+            endNode = newNode;
+        }
+        headNode = newNode;
     }
 
     public void append(T object) {
         Node newNode = new Node(object);
-        Node endNode = end();
-        if (head == null) {
-            head = newNode;
+        if (headNode == null) {
+            headNode = newNode;
+            endNode = newNode;
         } else {
-            end().setNext(newNode);
+            endNode.setNext(newNode);
+            endNode = newNode;
         }
     }
 
     public T get(int n) {
         T requestedObject = null;
         if (n < size()) {
-            Node requestedNode = head;
+            Node requestedNode = headNode;
             while (n-- > 0) {
                 requestedNode = requestedNode.getNext();
             }
@@ -88,15 +93,19 @@ public class LinkedList<T> {
         T requestedObject = null;
         if (n < size()) {
             Node beforeRequestedNode = null;
-            Node requestedNode = head;
+            Node requestedNode = headNode;
             while (n-- > 0) {
                 beforeRequestedNode = requestedNode;
                 requestedNode = requestedNode.getNext();
             }
             if (beforeRequestedNode != null) {
                 beforeRequestedNode.setNext(requestedNode.getNext());
+                if (beforeRequestedNode.getNext() == null){
+                    endNode = beforeRequestedNode;
+                }
             } else {
-                head  = requestedNode.getNext();
+                headNode = requestedNode.getNext();
+                endNode = headNode;
             }
             requestedObject = requestedNode.getPayload();
         }
@@ -105,9 +114,9 @@ public class LinkedList<T> {
 
     public T remove(T object) {
         T requestedObject = null;
-        if (head != null) {
+        if (headNode != null) {
             Node beforeRequestedNode = null;
-            Node requestedNode = head;
+            Node requestedNode = headNode;
             boolean foundNode = false;
             do {
                 if (requestedNode.getPayload().equals(object)) {
@@ -120,8 +129,12 @@ public class LinkedList<T> {
 
             if (beforeRequestedNode != null) {
                 beforeRequestedNode.setNext(requestedNode.getNext());
+                if (beforeRequestedNode.getNext() == null){
+                    endNode = beforeRequestedNode;
+                }
             } else {
-                head  = requestedNode.getNext();
+                headNode = requestedNode.getNext();
+                endNode = headNode;
             }
             requestedObject = requestedNode.getPayload();
         }

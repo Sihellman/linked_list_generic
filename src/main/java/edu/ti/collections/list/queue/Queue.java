@@ -15,10 +15,12 @@ public class Queue<T> {
 
     public void enqueue(T obj) {
         //TODO: Implement
+        list.append(obj);
     }
 
     public T dequeue() {
         //TODO: Implement
-        return null;
+        return list.remove(0);
+
     }
 }

@@ -12,6 +12,7 @@ public class QueueTest {
         assertTrue(queue.isEmpty());
     }
 
+
     @Test
     public void testAddOneIsNotEmptyHasSizeOne() {
         Queue<Integer> queue =  new Queue<>();
@@ -42,7 +43,7 @@ public class QueueTest {
     }
 
     @Test
-    public void testPopIsPush() {
+    public void testDequeueIsEnqueue() {
         Queue<Person> queue = new Queue<>();
         Person alice = new Person("Smith", "Alice");
         Person bob = new Person("Smith", "Bob");
